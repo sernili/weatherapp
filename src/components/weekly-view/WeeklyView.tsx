@@ -12,6 +12,7 @@ export interface WeatherDataItem extends WeatherData {
 }
 
 export default function WeeklyView() {
+  // TODO: get weather data from API
   const weatherData: WeatherData[] = [
     { date: "2024-03-03", temperature: 22, background: "" },
     { date: "2024-03-04", temperature: 28, background: "" },
