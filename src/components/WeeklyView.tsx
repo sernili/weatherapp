@@ -1,5 +1,5 @@
 import React from "react";
-import WeeklyViewItem from "../weekly-view-item/WeeklyViewItem";
+import WeeklyViewItem from "./WeeklyViewItem";
 
 export interface WeatherData {
   date: string;
