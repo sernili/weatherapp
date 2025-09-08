@@ -38,12 +38,12 @@ export function SearchLocationInput({
     //   <CardContent>
     <form method="post" onSubmit={handleSubmit}>
       <div className="space-y-4">
-        <Label
+        {/* <Label
           htmlFor="city"
-          className="block font-bold font-mono text-dark text-center text-lg"
+          className="block font-bold font-mono text-dark text-lg"
         >
           Enter your location:
-        </Label>
+        </Label> */}
 
         <div className="flex items-center justify-center gap-6">
           <Input

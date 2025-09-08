@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Geist:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-mono: "Arvo", monospace;
-  --font-body: "Geist", sans-serif;
+  --font-mono: "Luckiest Guy", monospace;
+  --font-body: "Montserrat", sans-serif;
 
   --color-dark: #556b2f;
   --color-light: #fff;

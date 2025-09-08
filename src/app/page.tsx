@@ -2,7 +2,10 @@
 
 import { SearchLocationInput } from "@/components/SearchLocationInput";
 import WeeklyView from "@/components/WeeklyView";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import cactusImg from "../../public/cactus.png";
+import LastWater from "@/components/LastWater";
 
 export default function Home() {
   const [weatherData, setWeatherData] = useState([]);
@@ -41,9 +44,16 @@ export default function Home() {
 
   return (
     <main className="bg-tertiary h-screen w-screen flex justify-center items-center flex-col gap-6">
-      <div className="text-center space-y-4 mb-6">
+      <div className="text-center space-y-4 mb-6 flex flex-col items-center justify-center gap-2">
+        <Image
+          src={cactusImg}
+          alt="cactus"
+          width={100}
+          height={100}
+          className="rounded-full"
+        />
         <h1 className="font-mono text-dark text-4xl font-bold">Water Me!</h1>
-        <p className=" text-dark text-xl ">
+        <p className=" text-dark  ">
           Hate wasting water? Determine the best schedule to water your garden!
         </p>
       </div>
