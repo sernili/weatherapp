@@ -1,57 +1,36 @@
 import React, { useEffect } from "react";
 import WeeklyViewItem from "./WeeklyViewItem";
 
-export interface WeatherDataMockup {
-  date: string;
-  temperature: number;
-  background: string;
-}
-
-export interface WeatherDataItem extends WeatherDataMockup {
-  city: string;
-}
-
 export default function WeeklyView({ weatherData }) {
-  // TODO: get weather data from API
-  const weatherDataMockup: WeatherDataMockup[] = [
-    { date: "2024-03-03", temperature: 22, background: "" },
-    { date: "2024-03-04", temperature: 28, background: "" },
-    { date: "2024-03-05", temperature: 25, background: "" },
-    { date: "2024-02-06", temperature: 20, background: "" },
-    { date: "2024-03-07", temperature: 19, background: "" },
-    { date: "2024-03-08", temperature: 23, background: "" },
-    { date: "2024-03-09", temperature: 24, background: "" },
-  ];
-  const backgroundColors = [
-    "bg-blue-100",
-    "bg-blue-200",
-    "bg-blue-300",
-    "bg-blue-400",
-    "bg-blue-500",
-    "bg-blue-600",
-    "bg-blue-700",
-  ];
-
-  weatherDataMockup.forEach((data, index) => {
-    return (data.background = backgroundColors[index]);
-  });
-
-  const city = "Dresden";
+  const todayData = weatherData?.forecast?.forecastday?.slice(0, 1);
+  const upComingData = weatherData?.forecast?.forecastday?.slice(1, 4);
 
   useEffect(() => {
-    console.log("DATA", weatherData);
-  }, [weatherData]);
+    console.log("DATA", todayData);
+  }, [todayData]);
 
   return (
-    <div className="flex gap-2 flex-col place-items-center">
-      <div className="flex gap-2 place-items-center ">
-        {weatherDataMockup.map((data) => (
+    <div className="grid ">
+      <div className="flex gap-3 place-items-center h-full ">
+        <WeeklyViewItem
+          key={todayData[0].date}
+          date={todayData[0].date}
+          temp_min={todayData[0].day.mintemp_c}
+          temp_max={todayData[0].day.maxtemp_c}
+          temp_avg={todayData[0].day.avgtemp_c}
+          condition={todayData[0].day.condition}
+          isToday={true}
+        />
+
+        {upComingData.map((data) => (
           <WeeklyViewItem
-            key={data.background}
+            key={data.date}
             date={data.date}
-            temperature={data.temperature}
-            background={data.background}
-            city={city}
+            temp_min={data.day.mintemp_c}
+            temp_max={data.day.maxtemp_c}
+            temp_avg={data.day.avgtemp_c}
+            condition={data.day.condition}
+            isToday={false}
           />
         ))}
       </div>
