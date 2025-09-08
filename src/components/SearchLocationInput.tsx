@@ -37,17 +37,32 @@ export function SearchLocationInput({
     //   </CardHeader>
     //   <CardContent>
     <form method="post" onSubmit={handleSubmit}>
-      <div className="flex  gap-6">
-        <Input
-          type="text"
-          placeholder="Enter your city name"
-          name="city"
-          defaultValue={city}
-          autoComplete="home city"
-        />
-        <Button type="submit" variant="outline">
-          Search
-        </Button>
+      <div className="space-y-4">
+        <Label
+          htmlFor="city"
+          className="block font-bold font-mono text-dark text-center text-lg"
+        >
+          Enter your location:
+        </Label>
+
+        <div className="flex items-center justify-center gap-6">
+          <Input
+            type="text"
+            className="border-dark border-2 hover:cursor-pointer  "
+            placeholder="Enter your city name"
+            name="city"
+            defaultValue={city}
+            autoComplete="home city"
+          />
+
+          <Button
+            type="submit"
+            variant="outline"
+            className="border-dark border-2 hover:cursor-pointer  bg-secondary hover:bg-tertiary"
+          >
+            Search
+          </Button>
+        </div>
       </div>
     </form>
     //   </CardContent>

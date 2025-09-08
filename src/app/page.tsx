@@ -10,6 +10,8 @@ export default function Home() {
   const [searchError, setSearchError] = useState("");
 
   const fetchWeatherForecast = async (city: string) => {
+    if (!city) return;
+
     const url = `http://api.weatherapi.com/v1/forecast.json?key=c693abb5cb6542a3b25130852250509&q=${city}&days=7&aqi=no&alerts=no`;
     try {
       const response = await fetch(url);
@@ -18,7 +20,6 @@ export default function Home() {
       }
 
       const result = await response.json();
-      console.log("RESULT", result);
 
       setWeatherData(result);
       setSearchError("");
@@ -29,31 +30,45 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log(weatherData);
+    console.log("data: ", weatherData.location);
+    console.log("error: ", searchError == "");
   }, [weatherData]);
 
   useEffect(() => {
     fetchWeatherForecast(city);
-    console.log(city);
+    console.log("city: ", city);
   }, [city]);
 
   return (
     <main className="bg-tertiary h-screen w-screen flex justify-center items-center flex-col gap-6">
-      <h1 className="font-mono text-dark text-4xl font-bold">Water Me!</h1>
-      <div className="max-w-3/4 w-full bg-white rounded-xl px-6 py-8 flex flex-col items-center justify-center h-fit gap-6">
-        <SearchLocationInput city={city} setCity={setCity} />
-
-        {searchError && <p>{searchError}</p>}
-
-        {weatherData && !searchError && (
+      <div className="text-center space-y-4 mb-6">
+        <h1 className="font-mono text-dark text-4xl font-bold">Water Me!</h1>
+        <p className=" text-dark text-xl ">
+          Hate wasting water? Determine the best schedule to water your garden!
+        </p>
+      </div>
+      <div className="max-w-3/4 w-full bg-white rounded-xl px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
+        {!weatherData.location ? (
           <>
-            <p className="text-dark">
-              {weatherData.location.name}, {weatherData.location.region},{" "}
-              {weatherData.location.country}
-            </p>
-
-            <WeeklyView weatherData={weatherData} />
+            <SearchLocationInput city={city} setCity={setCity} />
+            {searchError && <p>{searchError}</p>}
           </>
+        ) : (
+          weatherData.location &&
+          searchError == "" && (
+            <>
+              <SearchLocationInput city={city} setCity={setCity} />
+              <div className="space-y-6 text-center ">
+                <p className="text-dark text-end">
+                  {weatherData.location.name}, {weatherData.location.region},{" "}
+                  {weatherData.location.country}
+                </p>
+                <div>
+                  <WeeklyView weatherData={weatherData} />
+                </div>
+              </div>
+            </>
+          )
         )}
       </div>
     </main>

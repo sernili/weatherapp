@@ -12,3 +12,9 @@
   --color-tertiary: #eff5d2;
   --color-accent: #f3c623;
 }
+
+@layer components {
+  :root {
+    font-family: var(--font-body);
+  }
+}
