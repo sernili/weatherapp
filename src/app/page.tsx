@@ -42,7 +42,7 @@ export default function Home() {
           height={100}
           className="rounded-full"
         />
-        <h1 className="font-mono text-dark text-4xl font-bold">Water Me!</h1>
+        <h1 className="font-fancy text-dark text-4xl font-bold">Water Me!</h1>
         <p className=" text-dark  ">
           Hate wasting water? Determine the best schedule to water your garden!
         </p>

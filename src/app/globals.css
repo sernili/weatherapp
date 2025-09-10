@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-mono: "Luckiest Guy", monospace;
+  --font-fancy: "Luckiest Guy", monospace;
   --font-body: "Montserrat", sans-serif;
 
   --color-dark: #556b2f;
