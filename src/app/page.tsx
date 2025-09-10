@@ -5,42 +5,32 @@ import WeeklyView from "@/components/WeeklyView";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import cactusImg from "../../public/cactus.png";
-import LastWater from "@/components/LastWater";
+import fetchWeatherForecast from "@/api/fetchWeatherData";
+import { WeatherTimeline } from "@/types/weather";
 
 export default function Home() {
-  const [weatherData, setWeatherData] = useState([]);
+  const [weatherTimeline, setWeatherTimeline] = useState<
+    WeatherTimeline | undefined
+  >(undefined);
   const [city, setCity] = useState("");
-  const [searchError, setSearchError] = useState("");
-
-  const fetchWeatherForecast = async (city: string) => {
-    if (!city) return;
-
-    const url = `http://api.weatherapi.com/v1/forecast.json?key=c693abb5cb6542a3b25130852250509&q=${city}&days=7&aqi=no&alerts=no`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      setWeatherData(result);
-      setSearchError("");
-    } catch (error) {
-      setSearchError("No city found!");
-      console.error(error.message);
-    }
-  };
+  const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    console.log("data: ", weatherData.location);
-    console.log("error: ", searchError == "");
-  }, [weatherData]);
+    console.log("data: ", weatherTimeline);
+    console.log("error: ", searchError);
+  }, [weatherTimeline, searchError]);
 
-  useEffect(() => {
-    fetchWeatherForecast(city);
-    console.log("city: ", city);
-  }, [city]);
+  // useEffect(() => {
+  //   const getWeatherForecast = async () => {
+  //     const { weatherTimeline, error } = await fetchWeatherForecast(city);
+  //     setWeatherTimeline(weatherTimeline);
+  //     setSearchError(error);
+  //   };
+
+  //   getWeatherForecast();
+
+  //   console.log("city: ", city);
+  // }, [city]);
 
   return (
     <main className="bg-gradient-to-t from-tertiary to-tertiary/20 h-screen w-screen flex justify-center items-center flex-col gap-6">
@@ -58,29 +48,32 @@ export default function Home() {
         </p>
       </div>
       <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
-        {!weatherData.location ? (
+        {!weatherTimeline?.location ? (
           <>
+            NO LOCATION
             <SearchLocationInput city={city} setCity={setCity} />
             {searchError && <p>{searchError}</p>}
           </>
         ) : (
-          weatherData.location &&
+          weatherTimeline?.location &&
           searchError == "" && (
             <>
-              <SearchLocationInput city={city} setCity={setCity} />
-              <div className="space-y-6 text-center ">
+              LOCATION
+              {/* <div className="space-y-6 text-center ">
                 <p className="text-dark text-end">
-                  {weatherData.location.name}, {weatherData.location.region},{" "}
-                  {weatherData.location.country}
+                  {weatherTimeline.location.name},{" "}
+                  {weatherTimeline.location.region},{" "}
+                  {weatherTimeline.location.country}
                 </p>
                 <div>
-                  <WeeklyView weatherData={weatherData} />
+                  <WeeklyView weatherTimeline={weatherTimeline} />
                 </div>
-              </div>
+              </div> */}
             </>
           )
         )}
       </div>
+      TEST
     </main>
   );
 }

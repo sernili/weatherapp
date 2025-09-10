@@ -1,0 +1,37 @@
+export type FetchWeatherDataResponse = {
+  weatherTimeline: WeatherTimeline | undefined;
+  error: string | undefined;
+};
+
+export type WeatherLocation = {
+  name: string;
+  region: string;
+  country: string;
+};
+
+export type WeatherDay = {
+  date: string;
+  day: {
+    avgtemp_c: number;
+    maxtemp_c: number;
+    mintemp_c: number;
+    condition: {
+      text: string;
+      icon: string;
+    };
+  };
+};
+
+export interface WeatherDataAPI {
+  location: WeatherLocation;
+  forecast: {
+    forecastday: WeatherDay[];
+  };
+}
+
+export interface WeatherTimeline {
+  location: WeatherLocation;
+  today: WeatherDay;
+  future: WeatherDay[];
+  past: WeatherDay[];
+}
