@@ -15,36 +15,15 @@ export default function WeeklyView({
     <div className="grid ">
       <div className="flex gap-3 place-items-center h-full ">
         {weatherTimeline.past.map((data) => (
-          <WeeklyViewItem
-            key={data.date}
-            date={data.date}
-            temp_min={data.day.mintemp_c}
-            temp_max={data.day.maxtemp_c}
-            temp_avg={data.day.avgtemp_c}
-            condition={data.day.condition}
-            isToday={false}
-          />
+          <WeeklyViewItem key={data.date} data={data} />
         ))}
         <WeeklyViewItem
           key={weatherTimeline.today.date}
-          date={weatherTimeline.today.date}
-          temp_min={weatherTimeline.today.day.mintemp_c}
-          temp_max={weatherTimeline.today.day.maxtemp_c}
-          temp_avg={weatherTimeline.today.day.avgtemp_c}
-          condition={weatherTimeline.today.day.condition}
-          isToday={true}
+          data={weatherTimeline.today}
         />
 
         {weatherTimeline.future.map((data) => (
-          <WeeklyViewItem
-            key={data.date}
-            date={data.date}
-            temp_min={data.day.mintemp_c}
-            temp_max={data.day.maxtemp_c}
-            temp_avg={data.day.avgtemp_c}
-            condition={data.day.condition}
-            isToday={false}
-          />
+          <WeeklyViewItem key={data.date} data={data} />
         ))}
       </div>
     </div>

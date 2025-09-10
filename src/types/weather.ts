@@ -9,18 +9,19 @@ export type WeatherLocation = {
   country: string;
 };
 
-export type WeatherDay = {
+export interface WeatherDay {
   date: string;
   day: {
     avgtemp_c: number;
     maxtemp_c: number;
     mintemp_c: number;
+    daily_chance_of_rain: number;
     condition: {
       text: string;
       icon: string;
     };
   };
-};
+}
 
 export interface WeatherDataAPI {
   location: WeatherLocation;

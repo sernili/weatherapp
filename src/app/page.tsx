@@ -15,14 +15,13 @@ export default function Home() {
   const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
+  // TODO: remove for production
   useEffect(() => {
     console.log("data: ", weatherTimeline);
     console.log("error: ", searchError);
   }, [weatherTimeline, searchError]);
 
   useEffect(() => {
-    console.log("CHANGE");
-
     if (city === undefined) return;
 
     const getWeatherForecast = async () => {
@@ -32,8 +31,6 @@ export default function Home() {
     };
 
     getWeatherForecast();
-
-    console.log("city: ", city);
   }, [city]);
 
   return (
