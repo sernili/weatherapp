@@ -14,7 +14,7 @@ export function SearchLocationInput({
   city,
   setCity,
 }: {
-  city: string;
+  city: string | undefined;
   setCity: (city: string) => void;
 }) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,6 +25,7 @@ export function SearchLocationInput({
 
     const formJson = Object.fromEntries(formData.entries());
     setCity(formJson.city.toString());
+    console.log(formJson.city.toString());
   };
 
   return (

@@ -9,7 +9,7 @@ import {
 const weather_api_key = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
 export default async function fetchWeatherForecast(
-  city: string
+  city: string | undefined
 ): Promise<FetchWeatherDataResponse> {
   if (!city) return { weatherTimeline: undefined, error: "City not found" };
 
@@ -71,7 +71,7 @@ export default async function fetchWeatherForecast(
 function getTargetPastDates(daysRange: number): string[] {
   const pastDates = [];
 
-  for (let i = 1; i <= daysRange; i++) {
+  for (let i = daysRange; i > 0; i--) {
     console.log(i);
 
     const date = new Date();

@@ -12,7 +12,7 @@ export default function Home() {
   const [weatherTimeline, setWeatherTimeline] = useState<
     WeatherTimeline | undefined
   >(undefined);
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -20,17 +20,21 @@ export default function Home() {
     console.log("error: ", searchError);
   }, [weatherTimeline, searchError]);
 
-  // useEffect(() => {
-  //   const getWeatherForecast = async () => {
-  //     const { weatherTimeline, error } = await fetchWeatherForecast(city);
-  //     setWeatherTimeline(weatherTimeline);
-  //     setSearchError(error);
-  //   };
+  useEffect(() => {
+    console.log("CHANGE");
 
-  //   getWeatherForecast();
+    if (city === undefined) return;
 
-  //   console.log("city: ", city);
-  // }, [city]);
+    const getWeatherForecast = async () => {
+      const { weatherTimeline, error } = await fetchWeatherForecast(city);
+      setWeatherTimeline(weatherTimeline);
+      setSearchError(error);
+    };
+
+    getWeatherForecast();
+
+    console.log("city: ", city);
+  }, [city]);
 
   return (
     <main className="bg-gradient-to-t from-tertiary to-tertiary/20 h-screen w-screen flex justify-center items-center flex-col gap-6">
@@ -50,16 +54,16 @@ export default function Home() {
       <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
         {!weatherTimeline?.location ? (
           <>
-            NO LOCATION
             <SearchLocationInput city={city} setCity={setCity} />
-            {searchError && <p>{searchError}</p>}
+            {searchError !== undefined && <p>{searchError}</p>}
           </>
         ) : (
           weatherTimeline?.location &&
-          searchError == "" && (
+          searchError === undefined && (
             <>
-              LOCATION
-              {/* <div className="space-y-6 text-center ">
+              <SearchLocationInput city={city} setCity={setCity} />
+
+              <div className="space-y-6 text-center ">
                 <p className="text-dark text-end">
                   {weatherTimeline.location.name},{" "}
                   {weatherTimeline.location.region},{" "}
@@ -68,12 +72,11 @@ export default function Home() {
                 <div>
                   <WeeklyView weatherTimeline={weatherTimeline} />
                 </div>
-              </div> */}
+              </div>
             </>
           )
         )}
       </div>
-      TEST
     </main>
   );
 }
