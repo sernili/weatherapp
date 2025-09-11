@@ -15,6 +15,8 @@ export default function Home() {
   const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
+  const daysRange = 3; // Number of days displayed in weather forecast +- today
+
   // TODO: remove for production
   useEffect(() => {
     console.log("data: ", weatherTimeline);
@@ -25,7 +27,10 @@ export default function Home() {
     if (city === undefined) return;
 
     const getWeatherForecast = async () => {
-      const { weatherTimeline, error } = await fetchWeatherForecast(city);
+      const { weatherTimeline, error } = await fetchWeatherForecast(
+        city,
+        daysRange
+      );
       setWeatherTimeline(weatherTimeline);
       setSearchError(error);
     };
@@ -68,7 +73,10 @@ export default function Home() {
                   {weatherTimeline.location.country}
                 </p>
                 <div>
-                  <WeeklyView weatherTimeline={weatherTimeline} />
+                  <WeeklyView
+                    weatherTimeline={weatherTimeline}
+                    daysRange={daysRange}
+                  />
                 </div>
               </div>
             </>

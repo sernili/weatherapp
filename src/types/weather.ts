@@ -16,6 +16,8 @@ export interface WeatherDay {
     maxtemp_c: number;
     mintemp_c: number;
     daily_chance_of_rain: number;
+    totalprecip_mm: number;
+    uv: number;
     condition: {
       text: string;
       icon: string;

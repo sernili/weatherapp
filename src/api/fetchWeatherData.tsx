@@ -9,14 +9,14 @@ import {
 const weather_api_key = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
 export default async function fetchWeatherForecast(
-  city: string | undefined
+  city: string | undefined,
+  daysRange: number
 ): Promise<FetchWeatherDataResponse> {
   if (!city) return { weatherTimeline: undefined, error: "City not found" };
 
   let weatherTimeline: WeatherTimeline | undefined = undefined;
   let error: string | undefined = undefined;
 
-  const daysRange = 3; // i.e. +- x days from today
   const pastDates: string[] = getTargetPastDates(daysRange);
 
   try {
