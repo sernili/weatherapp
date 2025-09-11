@@ -15,7 +15,7 @@ export default function Home() {
   const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
-  const daysRange = 3; // Number of days displayed in weather forecast +- today
+  const daysRange = 4; // Number of days displayed in weather forecast +- today
 
   // TODO: remove for production
   useEffect(() => {

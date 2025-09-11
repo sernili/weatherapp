@@ -28,7 +28,9 @@ export default async function fetchWeatherForecast(
     });
 
     const promiseFuture = fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=4&aqi=no&alerts=no`
+      `http://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=${
+        daysRange + 1
+      }&aqi=no&alerts=no`
     );
 
     const allPromises = [promiseFuture, ...promisesPast];
@@ -42,13 +44,12 @@ export default async function fetchWeatherForecast(
       })
     );
 
+    console.log("RESULT: ", results[0].forecast.forecastday);
+
     // Transform Data into Required Format
     const location: WeatherLocation = results[0].location; // TODO: validate that locations from API calls match;
     const today: WeatherDay = results[0].forecast.forecastday[0];
-    const future: WeatherDay[] = results[0].forecast.forecastday.splice(
-      1,
-      daysRange + 1
-    );
+    const future: WeatherDay[] = results[0].forecast.forecastday.splice(1);
     const past: WeatherDay[] = results.slice(1).flatMap((result) => {
       return result.forecast.forecastday;
     });
