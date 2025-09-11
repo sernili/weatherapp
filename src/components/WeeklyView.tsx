@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import WeeklyViewItem from "./WeeklyViewItem";
 import { WeatherDay, WeatherTimeline } from "@/types/weather";
 import { WateringRequirements, WateringLast } from "@/types/watering";
+import next from "next";
 
 export default function WeeklyView({
   weatherTimeline,
@@ -11,8 +12,8 @@ export default function WeeklyView({
   daysRange: number;
 }) {
   // TODO: put in state and get from user input
-  const waterRequirements: WateringRequirements = 1;
-  const lastWatering: WateringLast = new Date("2025-09-06");
+  const waterRequirements: WateringRequirements = 3;
+  const lastWatering: WateringLast = new Date("2025-09-07");
 
   // Watering Logic
   const today: Date = new Date();
@@ -34,6 +35,13 @@ export default function WeeklyView({
     waterRequirements
   );
 
+  const additionalDays_Rain = getAdditionalDays_Rain(
+    indexLastWatering,
+    weatherArray,
+    waterRequirements,
+    nextWater_Temp
+  );
+
   console.log("Next: ", nextWater_Temp);
 
   useEffect(() => {
@@ -43,16 +51,17 @@ export default function WeeklyView({
   return (
     <div className="grid ">
       <div className="flex gap-3 place-items-center h-full ">
-        {weatherTimeline.past.map((data) => (
-          <WeeklyViewItem key={data.date} weather={data} />
-        ))}
-        <WeeklyViewItem
-          key={weatherTimeline.today.date}
-          weather={weatherTimeline.today}
-        />
-
-        {weatherTimeline.future.map((data) => (
-          <WeeklyViewItem key={data.date} weather={data} />
+        {weatherArray.map((data) => (
+          <WeeklyViewItem
+            key={data.date}
+            weather={data}
+            daysSinceLastWatering={getDayDifference(
+              lastWatering,
+              new Date(data.date)
+            )}
+            nextWater_Temp={nextWater_Temp}
+            additionalDays_Rain={additionalDays_Rain}
+          />
         ))}
       </div>
     </div>
@@ -70,7 +79,9 @@ function getNextWatering_Temperature(
   weatherArray: WeatherDay[],
   waterRequirements: WateringRequirements
 ) {
-  // Days until watering based on Temperature and Watering Requirements
+  let daysUntilWatering = 0;
+  const tempNextDay = weatherArray[indexLastWatering + 1].day.avgtemp_c;
+
   const tempRules = {
     cold: {
       1: 5,
@@ -89,17 +100,35 @@ function getNextWatering_Temperature(
     },
   };
 
-  let daysUntilNextWater = 0;
-
-  const tempNextDay = weatherArray[indexLastWatering + 1].day.avgtemp_c;
-
   if (tempNextDay < 20) {
-    daysUntilNextWater = tempRules["cold"][waterRequirements];
+    daysUntilWatering = tempRules["cold"][waterRequirements];
   } else if (tempNextDay >= 20 && tempNextDay < 30) {
-    daysUntilNextWater = tempRules["medium"][waterRequirements];
+    daysUntilWatering = tempRules["medium"][waterRequirements];
   } else {
-    tempRules["hot"][waterRequirements];
+    daysUntilWatering = tempRules["hot"][waterRequirements];
   }
 
-  return daysUntilNextWater;
+  return daysUntilWatering;
+}
+
+function getAdditionalDays_Rain(
+  indexLastWatering: number,
+  weatherArray: WeatherDay[],
+  waterRequirements: WateringRequirements,
+  nextWater_Temp: number
+) {
+  let additionalDays = 0;
+  const weatherSinceWater = weatherArray.slice(indexLastWatering);
+
+  weatherSinceWater.forEach((day, index) => {
+    if (
+      index <= nextWater_Temp + additionalDays &&
+      day.day.totalprecip_mm >= 5
+    ) {
+      additionalDays++;
+    }
+  });
+
+  console.log("additionalDays: ", additionalDays);
+  return additionalDays;
 }
