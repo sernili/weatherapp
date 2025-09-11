@@ -1,19 +1,16 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { WeatherDay } from "@/types/weather";
 import { Divide } from "lucide-react";
+import { WateringArray } from "@/types/watering";
 
 const rainThreshold = 2;
 
 export default function WeeklyViewItem({
   weather,
-  lastWater,
-  waterRequirements,
-  weatherArray,
+  watering,
 }: {
   weather: WeatherDay;
-  lastWater: Date;
-  waterRequirements: number;
-  weatherArray: WeatherDay[];
+  watering: WateringArray;
 }) {
   const todayDate = new Date();
   const currDate = new Date(weather.date);
@@ -21,67 +18,13 @@ export default function WeeklyViewItem({
     weekday: "long",
   });
 
-  const isToday = todayDate.toDateString() === currDate.toDateString();
-
-  const daysSinceLastWatering = getDayDifference(lastWater, currDate);
-  const isLastWater = daysSinceLastWatering === 0;
-
-  const isRainDay = weather.day.totalprecip_mm >= rainThreshold;
-  const lastRain: Date | undefined = isRainDay
-    ? currDate
-    : getLastRain(weatherArray, currDate);
-  const daysSinceLastRain =
-    lastRain === undefined
-      ? daysSinceLastWatering
-      : getDayDifference(lastRain, currDate);
-
-  const daysSinceLastWaterOrRain = Math.min(
-    daysSinceLastWatering,
-    daysSinceLastRain
-  );
-
-  const tempRules: Record<"cold" | "medium" | "hot", Record<number, number>> = {
-    cold: {
-      1: 5,
-      2: 4,
-      3: 3,
-    },
-    medium: {
-      1: 3,
-      2: 2,
-      3: 2,
-    },
-    hot: {
-      1: 2,
-      2: 1,
-      3: 1,
-    },
-  };
-
-  const currAvgTemp = weather.day.avgtemp_c;
-  const currTempRule =
-    currAvgTemp < 20
-      ? "cold"
-      : currAvgTemp >= 20 && currAvgTemp < 30
-      ? "medium"
-      : "hot";
-  const currDaysUntilWaterNeeded: number =
-    tempRules[currTempRule][waterRequirements];
-
-  const isTempDay =
-    !isRainDay &&
-    !isLastWater &&
-    daysSinceLastWaterOrRain < currDaysUntilWaterNeeded;
-
-  const isWaterDay = currDaysUntilWaterNeeded === daysSinceLastWaterOrRain;
-
   // Styling
   const cssContainerBase =
     "text-white p-4 rounded-xl text-center mb-8 space-y-4 shadow-lg w-32 h-full flex flex-col justify-between items-center  gap-4";
   const cssNotToday = "bg-secondary";
   const cssToday = "scale-110 bg-accent";
 
-  const cssContainer = isToday
+  const cssContainer = watering.isToday
     ? `${cssContainerBase} ${cssToday}`
     : `${cssContainerBase} ${cssNotToday}`;
 
@@ -103,17 +46,17 @@ export default function WeeklyViewItem({
         <p>{weather.day.totalprecip_mm}mm</p>
       </div>
 
-      {isLastWater && <div>💦✅</div>}
+      {watering.isLastWater && <div>💦</div>}
 
-      {daysSinceLastWatering > 0 && (
-        <>
-          <div>{daysSinceLastWatering}</div>
+      {/* {daysSinceLastWatering > 0 && ( */}
+      <>
+        {/* <div>{daysSinceLastWatering}</div> */}
 
-          {isRainDay && <div>🌧️</div>}
-          {isTempDay && <div>TEMP</div>}
-          {isWaterDay && <div>WATER</div>}
-        </>
-      )}
+        {watering.isRainDay && <div>🌧️</div>}
+        {watering.isTempDay && <div>✅</div>}
+        {watering.isWateringDay && <div>💦</div>}
+      </>
+      {/* )} */}
     </div>
   );
 }
@@ -187,7 +130,7 @@ function getLastRain(weatherArray: WeatherDay[], currDate: Date) {
   while (lastRain === undefined && index > 0) {
     index--;
 
-    console.log("INDEX: ", index);
+    // console.log("INDEX: ", index);
 
     // TODO: put in varibale
     if (weatherArray[index].day.totalprecip_mm > rainThreshold) {
@@ -195,6 +138,6 @@ function getLastRain(weatherArray: WeatherDay[], currDate: Date) {
     }
   }
 
-  console.log(lastRain);
+  // console.log(lastRain);
   return lastRain;
 }
