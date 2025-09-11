@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat, Luckiest_Guy } from "next/font/google";
+
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
+
+const luckiest = Luckiest_Guy({
+  subsets: ["latin"],
+  weight: "400", // Luckiest Guy gibt es nur in Regular 400
+  variable: "--font-luckiest",
+});
 
 export const metadata: Metadata = {
   title: "Water Me!",
@@ -16,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${montserrat.variable} ${luckiest.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

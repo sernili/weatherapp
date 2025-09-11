@@ -45,7 +45,8 @@ export default function Home() {
         />
         <h1 className="font-fancy text-dark text-4xl font-bold">Water Me!</h1>
         <p className=" text-dark  ">
-          Hate wasting water? Determine the best schedule to water your garden!
+          Hate wasting water? <br />
+          Determine the best schedule to water your garden!
         </p>
       </div>
       <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
