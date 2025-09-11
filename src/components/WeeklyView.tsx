@@ -7,6 +7,14 @@ import {
   WateringArray,
 } from "@/types/watering";
 
+const rainThreshold = 1;
+
+const tempRules: Record<"cold" | "medium" | "hot", Record<number, number>> = {
+  cold: { 1: 5, 2: 4, 3: 3 },
+  medium: { 1: 3, 2: 2, 3: 2 },
+  hot: { 1: 2, 2: 1, 3: 1 },
+};
+
 export default function WeeklyView({
   weatherTimeline,
   daysRange,
@@ -28,27 +36,9 @@ export default function WeeklyView({
     ]);
   }, [weatherTimeline]);
 
-  // useEffect(() => {
-  //   setDaysUntilWatering(
-  //     getNextWatering_Temperature(
-  //       lastWatering,
-  //       lastRain,
-  //       waterRequirements,
-  //       weatherArray
-  //     )
-  //   );
-  // }, [lastRain]);
-
   const todayDate = new Date();
   const wateringDays: Date[] = [lastWatering];
   const rainDays: Date[] = [];
-  const rainThreshold = 1;
-
-  const tempRules: Record<"cold" | "medium" | "hot", Record<number, number>> = {
-    cold: { 1: 5, 2: 4, 3: 3 },
-    medium: { 1: 3, 2: 2, 3: 2 },
-    hot: { 1: 2, 2: 1, 3: 1 },
-  };
 
   const wateringArray: WateringArray[] = weatherArray.flatMap((day, index) => {
     const currDate = new Date(day.date);
@@ -118,47 +108,6 @@ export default function WeeklyView({
     </div>
   );
 }
-
-// function getNextWatering_Temperature(
-//   lastWatering: Date,
-//   lastRain: Date,
-//   waterRequirements: WateringRequirements,
-//   weatherArray: WeatherDay[]
-// ) {
-
-//   let daysUntilWatering = 0;
-
-//   const tempNextDay = weatherArray[indexLastWatering + 1].day.avgtemp_c;
-
-//   const tempRules = {
-//     cold: {
-//       1: 5,
-//       2: 4,
-//       3: 3,
-//     },
-//     medium: {
-//       1: 3,
-//       2: 2,
-//       3: 2,
-//     },
-//     hot: {
-//       1: 2,
-//       2: 1,
-//       3: 1,
-//     },
-//   };
-
-//   if (tempNextDay < 20) {
-//     daysUntilWatering = tempRules["cold"][waterRequirements];
-//   } else if (tempNextDay >= 20 && tempNextDay < 30) {
-//     daysUntilWatering = tempRules["medium"][waterRequirements];
-//   } else {
-//     daysUntilWatering = tempRules["hot"][waterRequirements];
-//   }
-
-//   return daysUntilWatering;
-// }
-//#endregi
 
 function getDayDifference(date1: Date, date2: Date) {
   const oneDay = 1000 * 60 * 60 * 24; // ms in a day
