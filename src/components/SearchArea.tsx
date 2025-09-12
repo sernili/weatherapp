@@ -81,7 +81,6 @@ export function SearchArea({
   function onSubmit(data: FormValues) {
     setCity(data.city);
     setWaterRequirements(data.wateringRequirements);
-    console.log("water: ", data.wateringRequirements);
   }
 
   return (

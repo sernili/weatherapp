@@ -131,19 +131,13 @@ function getStartDate(lastWater: Date) {
     "Sunday",
   ];
 
-  console.log("WEEKDAY:", weekdayOfMinDate);
-  console.log("WEEKDAY[0]:", weekdays[0]);
-
   if (weekdayOfMinDate === weekdays[0]) {
     return minDate;
   } else {
     const indexMinDate = weekdays.findIndex((day) => day === weekdayOfMinDate);
 
-    console.log(indexMinDate);
     let targetDate = minDate;
     targetDate.setDate(minDate.getDate() - (indexMinDate + 1));
-
-    console.log("-1", targetDate);
 
     return targetDate;
   }

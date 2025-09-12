@@ -75,7 +75,5 @@ function getTargetPastDates(startDate: Date): string[] {
     pastDates.push(date.toLocaleDateString("en-CA"));
   }
 
-  console.log(pastDates);
-
   return pastDates;
 }
