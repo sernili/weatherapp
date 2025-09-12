@@ -84,12 +84,6 @@ export function SearchArea({
     console.log("water: ", data.wateringRequirements);
   }
 
-  function handleDateSelect(date: Date) {
-    setDate(date);
-    setOpen(false);
-    setLastWater(new Date(date));
-  }
-
   return (
     <Form {...form}>
       <form
@@ -220,7 +214,12 @@ export function SearchArea({
                       selected={field.value}
                       captionLayout="dropdown"
                       required
-                      onSelect={handleDateSelect}
+                      onSelect={(date) => {
+                        if (!date) return;
+                        field.onChange(date);
+                        setLastWater(new Date(date));
+                        setOpen(false);
+                      }}
                     />
                   </PopoverContent>
                 </Popover>

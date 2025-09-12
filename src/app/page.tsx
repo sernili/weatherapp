@@ -18,17 +18,10 @@ export default function Home() {
   >(undefined);
   const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
-
   const [waterRequirements, setWaterRequirements] =
     useState<WateringRequirements>(2);
   const [lastWater, setLastWater] = useState<Date>(yesterday);
   const daysRange = 4; // Number of days displayed in weather forecast +- today
-
-  // TODO: remove for production
-  useEffect(() => {
-    console.log("data: ", weatherTimeline);
-    console.log("error: ", searchError);
-  }, [weatherTimeline, searchError]);
 
   useEffect(() => {
     if (city === undefined) return;
