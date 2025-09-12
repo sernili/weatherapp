@@ -115,8 +115,8 @@ export default function WeeklyView({
   });
 
   return (
-    <div className="grid ">
-      <div className="grid grid-cols-7 gap-x-3 gap-y-12 place-items-center h-full ">
+    <div className="flex justify-center">
+      <div className="lg:grid flex lg:grid-cols-7 flex-wrap justify-center gap-x-3 gap-y-12  h-full">
         {weatherArray.map((data, index) => (
           <WeeklyViewItem
             key={data.date}

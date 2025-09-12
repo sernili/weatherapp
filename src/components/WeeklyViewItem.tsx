@@ -23,7 +23,7 @@ export default function WeeklyViewItem({
 
   // Styling
   const cssContainerBase =
-    "text-white p-4 rounded-sm text-center mb-2 space-y-4 shadow-lg w-32 h-full flex flex-col justify-between items-center gap-2";
+    "text-white p-6 rounded-sm text-center mb-2 space-y-4 shadow-lg w-32 h-full flex flex-col justify-between items-center gap-2";
 
   const cssPast = "bg-weather/50";
   const cssFuture = "bg-weather/80";

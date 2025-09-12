@@ -88,14 +88,14 @@ export function SearchArea({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-end justify-center gap-6"
+        className="flex items-end justify-center gap-x-6 md:gap-y-12 gap-y-8 flex-wrap"
       >
         {/* City */}
         <FormField
           control={form.control}
           name="city"
           render={({ field }) => (
-            <FormItem className="flex flex-col space-y-4">
+            <FormItem className="flex flex-col space-y-4  w-full md:w-52">
               <FormLabel className="block font-bold text-dark">
                 Your Location:
               </FormLabel>
@@ -118,7 +118,7 @@ export function SearchArea({
           control={form.control}
           name="wateringRequirements"
           render={({ field }) => (
-            <FormItem className="flex flex-col space-y-4">
+            <FormItem className="flex flex-col space-y-4  w-full md:w-52">
               <FormLabel className="block font-bold text-dark">
                 Watering Requirements:
               </FormLabel>
@@ -129,7 +129,7 @@ export function SearchArea({
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between font-normal bg-white border-dark border-2 hover:cursor-pointer",
+                        "w-full justify-between font-normal bg-white border-dark border-2 hover:cursor-pointer",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -184,7 +184,7 @@ export function SearchArea({
           name="lastWater"
           render={({ field }) => {
             return (
-              <FormItem className="flex flex-col gap-4">
+              <FormItem className="flex flex-col space-y-4  w-full md:w-52">
                 <FormLabel className="block font-bold text-dark">
                   Last Watering:
                 </FormLabel>
@@ -194,7 +194,7 @@ export function SearchArea({
                       <Button
                         variant="outline"
                         id="date"
-                        className="w-48 justify-between font-normal border-dark border-2 hover:cursor-pointer"
+                        className="w-full justify-between font-normal border-dark border-2 hover:cursor-pointer"
                       >
                         {field.value
                           ? mounted
@@ -236,7 +236,7 @@ export function SearchArea({
         <Button
           type="submit"
           variant="outline"
-          className="border-dark border-2 hover:cursor-pointer bg-secondary hover:bg-tertiary"
+          className="border-dark border-2 w-full lg:w-fit hover:cursor-pointer bg-secondary hover:bg-tertiary"
         >
           Search
         </Button>

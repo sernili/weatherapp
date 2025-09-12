@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <main className="bg-gradient-to-t from-tertiary to-tertiary/20 min-h-screen py-20 w-screen flex justify-center items-center flex-col gap-6">
-      <div className="text-center space-y-4 mb-6 flex flex-col items-center justify-center gap-2">
+      <div className="text-center space-y-4 mb-6 flex flex-col items-center justify-center gap-2 px-6">
         <Image
           src={cactusImg}
           alt="cactus"
@@ -58,7 +58,7 @@ export default function Home() {
           Hate wasting water? Determine the best schedule to water your garden!
         </p>
       </div>
-      <div className="mx-4 w-fit bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center  gap-20">
+      <div className="mx-4 w-fit min-w-4/5 max-w-screen overflow-hidden bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center  gap-20">
         {!weatherTimeline?.location ? (
           <>
             <SearchArea
