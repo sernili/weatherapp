@@ -215,6 +215,7 @@ export function SearchArea({
                       captionLayout="dropdown"
                       required
                       disabled={(date) => date > new Date()}
+                      weekStartsOn={1}
                       onSelect={(date) => {
                         if (!date) return;
                         field.onChange(date);

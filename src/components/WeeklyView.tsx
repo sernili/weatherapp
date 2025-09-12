@@ -6,6 +6,7 @@ import {
   WateringLast,
   WateringArray,
 } from "@/types/watering";
+import { getDayDifference } from "@/helper/dateHelpers";
 
 const rainThreshold = 1;
 
@@ -17,12 +18,12 @@ const tempRules: Record<"cold" | "medium" | "hot", Record<number, number>> = {
 
 export default function WeeklyView({
   weatherTimeline,
-  daysRange,
+  startDate,
   waterRequirements,
   lastWatering,
 }: {
   weatherTimeline: WeatherTimeline;
-  daysRange: number;
+  startDate: Date;
   waterRequirements: WateringRequirements;
   lastWatering: Date;
 }) {
@@ -50,7 +51,7 @@ export default function WeeklyView({
 
     const isLastWater = currDate.toDateString() == lastWatering.toDateString();
 
-    const isRainDay = day.day.totalprecip_mm > rainThreshold;
+    const isRainDay = !isLastWater && day.day.totalprecip_mm > rainThreshold;
 
     if (isRainDay) {
       rainDays.push(currDate);
@@ -74,7 +75,7 @@ export default function WeeklyView({
 
     const daysSinceLastRain = rainDays.length
       ? getDayDifference(rainDays[rainDays.length - 1], currDate)
-      : -daysRange;
+      : getDayDifference(startDate, todayDate);
 
     const daysSinceWater =
       daysSinceLastWatering < 0 && daysSinceLastRain >= 0
@@ -85,24 +86,13 @@ export default function WeeklyView({
 
     const isWateringDay =
       todayDate <= currDate &&
+      !isRainDay &&
       ((currDaysUntilWaterNeeded <= daysSinceWater && isToday) ||
         currDaysUntilWaterNeeded === daysSinceWater);
 
     if (isWateringDay) {
       wateringDays.push(currDate);
     }
-
-    console.log("----------------");
-    console.log("DATE: ", currDate.toLocaleDateString());
-    console.log(
-      "rainDays: ",
-      rainDays.map((day) => day.toLocaleDateString())
-    );
-    console.log("RAIN: ", daysSinceLastRain);
-    console.log("WATER: ", daysSinceLastWatering);
-    console.log("LAST: ", daysSinceWater);
-    console.log("UNTIL: ", currDaysUntilWaterNeeded);
-    console.log("----------------");
 
     const isTempDay =
       !isRainDay &&
@@ -137,10 +127,4 @@ export default function WeeklyView({
       </div>
     </div>
   );
-}
-
-function getDayDifference(date1: Date, date2: Date) {
-  const oneDay = 1000 * 60 * 60 * 24; // ms in a day
-  const diffInTime = date2.getTime() - date1.getTime();
-  return Math.round(diffInTime / oneDay);
 }

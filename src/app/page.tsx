@@ -8,6 +8,7 @@ import cactusImg from "../../public/cactus.png";
 import fetchWeatherForecast from "@/api/fetchWeatherData";
 import { WeatherTimeline } from "@/types/weather";
 import { WateringRequirements } from "@/types/watering";
+import { getDayDifference } from "@/helper/dateHelpers";
 
 export default function Home() {
   const yesterday = new Date();
@@ -21,7 +22,11 @@ export default function Home() {
   const [waterRequirements, setWaterRequirements] =
     useState<WateringRequirements>(2);
   const [lastWater, setLastWater] = useState<Date>(yesterday);
-  const daysRange = 30; // Number of days displayed in weather forecast +- today
+  const [startDate, setStartDate] = useState<Date>(getStartDate(lastWater)); // Number of days displayed in weather forecast +- today
+
+  useEffect(() => {
+    setStartDate(getStartDate(lastWater));
+  }, [lastWater]);
 
   useEffect(() => {
     if (city === undefined) return;
@@ -29,14 +34,14 @@ export default function Home() {
     const getWeatherForecast = async () => {
       const { weatherTimeline, error } = await fetchWeatherForecast(
         city,
-        daysRange
+        startDate
       );
       setWeatherTimeline(weatherTimeline);
       setSearchError(error);
     };
 
     getWeatherForecast();
-  }, [city]);
+  }, [city, lastWater, startDate]);
 
   return (
     <main className="bg-gradient-to-t from-tertiary to-tertiary/20 min-h-screen w-screen flex justify-center items-center flex-col gap-6">
@@ -87,7 +92,7 @@ export default function Home() {
                 <div>
                   <WeeklyView
                     weatherTimeline={weatherTimeline}
-                    daysRange={daysRange}
+                    startDate={startDate}
                     waterRequirements={waterRequirements}
                     lastWatering={lastWater}
                   />
@@ -99,4 +104,47 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+function getStartDate(lastWater: Date) {
+  const todayDate = new Date();
+
+  const minRange = 5; // TODO: all global variables in one place!!!
+  const daysSinceWater = getDayDifference(lastWater, todayDate);
+
+  const minDateCount = Math.max(minRange, daysSinceWater);
+  const minDate = todayDate;
+  minDate.setDate(todayDate.getDate() - minDateCount);
+
+  const weekdayOfMinDate = minDate.toLocaleDateString("en-US", {
+    weekday: "long",
+  });
+
+  // TODO: make flexible - start on Sun oder Mon
+  const weekdays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  console.log("WEEKDAY:", weekdayOfMinDate);
+  console.log("WEEKDAY[0]:", weekdays[0]);
+
+  if (weekdayOfMinDate === weekdays[0]) {
+    return minDate;
+  } else {
+    const indexMinDate = weekdays.findIndex((day) => day === weekdayOfMinDate);
+
+    console.log(indexMinDate);
+    let targetDate = minDate;
+    targetDate.setDate(minDate.getDate() - (indexMinDate + 1));
+
+    console.log("-1", targetDate);
+
+    return targetDate;
+  }
 }

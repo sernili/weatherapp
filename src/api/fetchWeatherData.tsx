@@ -1,3 +1,4 @@
+import { getDayDifference } from "@/helper/dateHelpers";
 import {
   WeatherDataAPI,
   WeatherTimeline,
@@ -10,14 +11,14 @@ const weather_api_key = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
 export default async function fetchWeatherForecast(
   city: string | undefined,
-  daysRange: number
+  startDate: Date
 ): Promise<FetchWeatherDataResponse> {
   if (!city) return { weatherTimeline: undefined, error: "City not found" };
 
   let weatherTimeline: WeatherTimeline | undefined = undefined;
   let error: string | undefined = undefined;
 
-  const pastDates: string[] = getTargetPastDates(daysRange);
+  const pastDates: string[] = getTargetPastDates(startDate);
 
   try {
     // Fetch Data from Weather API
@@ -28,9 +29,7 @@ export default async function fetchWeatherForecast(
     });
 
     const promiseFuture = fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=${
-        daysRange + 1
-      }&aqi=no&alerts=no`
+      `http://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=14&aqi=no&alerts=no`
     );
 
     const allPromises = [promiseFuture, ...promisesPast];
@@ -43,8 +42,6 @@ export default async function fetchWeatherForecast(
         return res.json();
       })
     );
-
-    console.log("RESULT: ", results[0].forecast.forecastday);
 
     // Transform Data into Required Format
     const location: WeatherLocation = results[0].location; // TODO: validate that locations from API calls match;
@@ -60,8 +57,6 @@ export default async function fetchWeatherForecast(
       future,
       past,
     };
-
-    console.log(weatherTimeline); // TODO: remove
   } catch (error) {
     console.error((error as Error).message);
   }
@@ -69,17 +64,18 @@ export default async function fetchWeatherForecast(
   return { weatherTimeline, error };
 }
 
-function getTargetPastDates(daysRange: number): string[] {
+function getTargetPastDates(startDate: Date): string[] {
   const pastDates = [];
+  const numDays = getDayDifference(startDate, new Date()) - 1;
 
-  for (let i = daysRange; i > 0; i--) {
-    console.log(i);
-
+  for (let i = numDays; i > 0; i--) {
     const date = new Date();
     date.setDate(date.getDate() - i);
 
     pastDates.push(date.toLocaleDateString("en-CA"));
   }
+
+  console.log(pastDates);
 
   return pastDates;
 }
