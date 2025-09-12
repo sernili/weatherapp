@@ -16,7 +16,7 @@ export default function WeeklyViewItem({
 
   // Styling
   const cssContainerBase =
-    "text-white p-4 rounded-xl text-center mb-8 space-y-4 shadow-lg w-32 h-full flex flex-col justify-between items-center  gap-4";
+    "text-white p-4 rounded-xl text-center mb-2 space-y-4 shadow-lg w-32 h-full flex flex-col justify-between items-center  gap-4";
   const cssNotToday = "bg-secondary";
   const cssToday = "scale-110 bg-accent";
 

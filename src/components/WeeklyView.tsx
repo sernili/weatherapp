@@ -72,17 +72,16 @@ export default function WeeklyView({
       currDate
     );
 
-    console.log("----------------");
-    console.log("TODAY: ", isToday);
-    console.log("LAST: ", daysSinceLastWatering);
-    console.log("UNTIL: ", daysSinceLastWatering);
-    console.log("----------------");
-
     const daysSinceLastRain = rainDays.length
       ? getDayDifference(rainDays[rainDays.length - 1], currDate)
-      : daysSinceLastWatering;
+      : -daysRange;
 
-    const daysSinceWater = Math.min(daysSinceLastRain, daysSinceLastWatering);
+    const daysSinceWater =
+      daysSinceLastWatering < 0 && daysSinceLastRain >= 0
+        ? daysSinceLastRain
+        : daysSinceLastRain < 0 && daysSinceLastWatering >= 0
+        ? daysSinceLastWatering
+        : Math.min(daysSinceLastRain, daysSinceLastWatering);
 
     const isWateringDay =
       todayDate <= currDate &&
@@ -93,12 +92,23 @@ export default function WeeklyView({
       wateringDays.push(currDate);
     }
 
+    console.log("----------------");
+    console.log("DATE: ", currDate.toLocaleDateString());
+    console.log(
+      "rainDays: ",
+      rainDays.map((day) => day.toLocaleDateString())
+    );
+    console.log("RAIN: ", daysSinceLastRain);
+    console.log("WATER: ", daysSinceLastWatering);
+    console.log("LAST: ", daysSinceWater);
+    console.log("UNTIL: ", currDaysUntilWaterNeeded);
+    console.log("----------------");
+
     const isTempDay =
       !isRainDay &&
       !isLastWater &&
       !isWateringDay &&
-      daysSinceWater > 0 &&
-      daysSinceWater < currDaysUntilWaterNeeded;
+      (daysSinceWater < 0 || daysSinceWater < currDaysUntilWaterNeeded);
 
     const isWarnDay =
       !isRainDay && !isLastWater && !isWateringDay && !isTempDay;
@@ -116,7 +126,7 @@ export default function WeeklyView({
 
   return (
     <div className="grid ">
-      <div className="grid grid-cols-7 gap-3 place-items-center h-full ">
+      <div className="grid grid-cols-7 gap-x-3  gap-y-12 place-items-center h-full ">
         {weatherArray.map((data, index) => (
           <WeeklyViewItem
             key={data.date}
