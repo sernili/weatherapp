@@ -24,12 +24,12 @@ export default async function fetchWeatherForecast(
     // Fetch Data from Weather API
     const promisesPast = pastDates.map((date) => {
       return fetch(
-        `http://api.weatherapi.com/v1/history.json?key=${weather_api_key}&q=${city}&dt=${date}`
+        `https://api.weatherapi.com/v1/history.json?key=${weather_api_key}&q=${city}&dt=${date}`
       );
     });
 
     const promiseFuture = fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=14&aqi=no&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=${weather_api_key}&q=${city}&days=14&aqi=no&alerts=no`
     );
 
     const allPromises = [promiseFuture, ...promisesPast];
