@@ -10,6 +10,9 @@ import { WeatherTimeline } from "@/types/weather";
 import { WateringRequirements } from "@/types/watering";
 
 export default function Home() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
   const [weatherTimeline, setWeatherTimeline] = useState<
     WeatherTimeline | undefined
   >(undefined);
@@ -18,6 +21,7 @@ export default function Home() {
 
   const [waterRequirements, setWaterRequirements] =
     useState<WateringRequirements>(2);
+  const [lastWater, setLastWater] = useState<Date>(yesterday);
   const daysRange = 4; // Number of days displayed in weather forecast +- today
 
   // TODO: remove for production
@@ -64,6 +68,8 @@ export default function Home() {
               setCity={setCity}
               waterRequirements={waterRequirements}
               setWaterRequirements={setWaterRequirements}
+              lastWater={lastWater}
+              setLastWater={setLastWater}
             />
             {searchError !== undefined && <p>{searchError}</p>}
           </>
@@ -76,6 +82,8 @@ export default function Home() {
                 setCity={setCity}
                 waterRequirements={waterRequirements}
                 setWaterRequirements={setWaterRequirements}
+                lastWater={lastWater}
+                setLastWater={setLastWater}
               />
               <div className="space-y-6 text-center ">
                 <p className="text-dark text-end">
@@ -88,6 +96,7 @@ export default function Home() {
                     weatherTimeline={weatherTimeline}
                     daysRange={daysRange}
                     waterRequirements={waterRequirements}
+                    lastWatering={lastWater}
                   />
                 </div>
               </div>

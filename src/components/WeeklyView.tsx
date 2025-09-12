@@ -19,14 +19,13 @@ export default function WeeklyView({
   weatherTimeline,
   daysRange,
   waterRequirements,
+  lastWatering,
 }: {
   weatherTimeline: WeatherTimeline;
   daysRange: number;
   waterRequirements: WateringRequirements;
+  lastWatering: Date;
 }) {
-  // TODO: put in state and get from user input
-  const lastWatering: WateringLast = new Date("2025-09-07");
-
   const [weatherArray, setWeatherArray] = useState<WeatherDay[]>([]);
 
   useEffect(() => {
