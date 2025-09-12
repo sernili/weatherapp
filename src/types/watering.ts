@@ -8,6 +8,7 @@ export type WateringArray = {
   isRainDay: boolean;
   isTempDay: boolean;
   isWateringDay: boolean;
+  isWarnDay: boolean;
 };
 
 export type WateringRequirementsOptions = {

@@ -46,6 +46,7 @@ export default function WeeklyViewItem({
       {watering.isRainDay && <div>🌧️</div>}
       {watering.isTempDay && <div>✅</div>}
       {watering.isWateringDay && <div>💦</div>}
+      {watering.isWarnDay && <div>🚨</div>}
     </div>
   );
 }

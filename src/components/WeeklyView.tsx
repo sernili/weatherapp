@@ -36,12 +36,16 @@ export default function WeeklyView({
     ]);
   }, [weatherTimeline]);
 
-  const todayDate = new Date();
   const wateringDays: Date[] = [lastWatering];
   const rainDays: Date[] = [];
 
   const wateringArray: WateringArray[] = weatherArray.flatMap((day, index) => {
+    const todayDate = new Date();
     const currDate = new Date(day.date);
+
+    todayDate.setHours(0, 0, 0, 0);
+    currDate.setHours(0, 0, 0, 0);
+
     const isToday = todayDate.toDateString() === currDate.toDateString();
 
     const isLastWater = currDate.toDateString() == lastWatering.toDateString();
@@ -68,19 +72,36 @@ export default function WeeklyView({
       currDate
     );
 
+    console.log("----------------");
+    console.log("TODAY: ", isToday);
+    console.log("LAST: ", daysSinceLastWatering);
+    console.log("UNTIL: ", daysSinceLastWatering);
+    console.log("----------------");
+
     const daysSinceLastRain = rainDays.length
       ? getDayDifference(rainDays[rainDays.length - 1], currDate)
       : daysSinceLastWatering;
 
     const daysSinceWater = Math.min(daysSinceLastRain, daysSinceLastWatering);
 
-    const isTempDay =
-      !isRainDay && !isLastWater && daysSinceWater < currDaysUntilWaterNeeded;
-    const isWateringDay = currDaysUntilWaterNeeded === daysSinceWater;
+    const isWateringDay =
+      todayDate <= currDate &&
+      ((currDaysUntilWaterNeeded <= daysSinceWater && isToday) ||
+        currDaysUntilWaterNeeded === daysSinceWater);
 
     if (isWateringDay) {
       wateringDays.push(currDate);
     }
+
+    const isTempDay =
+      !isRainDay &&
+      !isLastWater &&
+      !isWateringDay &&
+      daysSinceWater > 0 &&
+      daysSinceWater < currDaysUntilWaterNeeded;
+
+    const isWarnDay =
+      !isRainDay && !isLastWater && !isWateringDay && !isTempDay;
 
     return {
       date: currDate,
@@ -89,12 +110,13 @@ export default function WeeklyView({
       isRainDay,
       isTempDay,
       isWateringDay,
+      isWarnDay,
     };
   });
 
   return (
     <div className="grid ">
-      <div className="flex gap-3 place-items-center h-full ">
+      <div className="grid grid-cols-7 gap-3 place-items-center h-full ">
         {weatherArray.map((data, index) => (
           <WeeklyViewItem
             key={data.date}

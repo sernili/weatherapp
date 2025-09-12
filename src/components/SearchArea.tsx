@@ -214,6 +214,7 @@ export function SearchArea({
                       selected={field.value}
                       captionLayout="dropdown"
                       required
+                      disabled={(date) => date > new Date()}
                       onSelect={(date) => {
                         if (!date) return;
                         field.onChange(date);

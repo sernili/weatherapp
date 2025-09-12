@@ -21,7 +21,7 @@ export default function Home() {
   const [waterRequirements, setWaterRequirements] =
     useState<WateringRequirements>(2);
   const [lastWater, setLastWater] = useState<Date>(yesterday);
-  const daysRange = 4; // Number of days displayed in weather forecast +- today
+  const daysRange = 30; // Number of days displayed in weather forecast +- today
 
   useEffect(() => {
     if (city === undefined) return;
@@ -39,7 +39,7 @@ export default function Home() {
   }, [city]);
 
   return (
-    <main className="bg-gradient-to-t from-tertiary to-tertiary/20 h-screen w-screen flex justify-center items-center flex-col gap-6">
+    <main className="bg-gradient-to-t from-tertiary to-tertiary/20 min-h-screen w-screen flex justify-center items-center flex-col gap-6">
       <div className="text-center space-y-4 mb-6 flex flex-col items-center justify-center gap-2">
         <Image
           src={cactusImg}
@@ -53,7 +53,7 @@ export default function Home() {
           Hate wasting water? Determine the best schedule to water your garden!
         </p>
       </div>
-      <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
+      <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center  gap-20">
         {!weatherTimeline?.location ? (
           <>
             <SearchArea
