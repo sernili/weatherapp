@@ -18,12 +18,13 @@ const tempRules: Record<"cold" | "medium" | "hot", Record<number, number>> = {
 export default function WeeklyView({
   weatherTimeline,
   daysRange,
+  waterRequirements,
 }: {
   weatherTimeline: WeatherTimeline;
   daysRange: number;
+  waterRequirements: WateringRequirements;
 }) {
   // TODO: put in state and get from user input
-  const waterRequirements: WateringRequirements = 3;
   const lastWatering: WateringLast = new Date("2025-09-07");
 
   const [weatherArray, setWeatherArray] = useState<WeatherDay[]>([]);
@@ -91,8 +92,6 @@ export default function WeeklyView({
       isWateringDay,
     };
   });
-
-  console.table(wateringArray);
 
   return (
     <div className="grid ">

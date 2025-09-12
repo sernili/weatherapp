@@ -9,3 +9,8 @@ export type WateringArray = {
   isTempDay: boolean;
   isWateringDay: boolean;
 };
+
+export type WateringRequirementsOptions = {
+  label: string;
+  value: WateringRequirements;
+};

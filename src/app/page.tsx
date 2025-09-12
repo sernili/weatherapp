@@ -1,12 +1,13 @@
 "use client";
 
-import { SearchLocationInput } from "@/components/SearchLocationInput";
+import { SearchArea } from "@/components/SearchArea";
 import WeeklyView from "@/components/WeeklyView";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import cactusImg from "../../public/cactus.png";
 import fetchWeatherForecast from "@/api/fetchWeatherData";
 import { WeatherTimeline } from "@/types/weather";
+import { WateringRequirements } from "@/types/watering";
 
 export default function Home() {
   const [weatherTimeline, setWeatherTimeline] = useState<
@@ -15,6 +16,8 @@ export default function Home() {
   const [city, setCity] = useState<string | undefined>(undefined);
   const [searchError, setSearchError] = useState<string | undefined>(undefined);
 
+  const [waterRequirements, setWaterRequirements] =
+    useState<WateringRequirements>(2);
   const daysRange = 4; // Number of days displayed in weather forecast +- today
 
   // TODO: remove for production
@@ -50,22 +53,30 @@ export default function Home() {
         />
         <h1 className="font-fancy text-dark text-4xl font-bold">Water Me!</h1>
         <p className=" text-dark  ">
-          Hate wasting water? <br />
-          Determine the best schedule to water your garden!
+          Hate wasting water? Determine the best schedule to water your garden!
         </p>
       </div>
       <div className="max-w-3/4 w-full bg-white rounded-xl shadow-lg px-6 py-8 flex flex-col items-center justify-center h-fit gap-20">
         {!weatherTimeline?.location ? (
           <>
-            <SearchLocationInput city={city} setCity={setCity} />
+            <SearchArea
+              city={city}
+              setCity={setCity}
+              waterRequirements={waterRequirements}
+              setWaterRequirements={setWaterRequirements}
+            />
             {searchError !== undefined && <p>{searchError}</p>}
           </>
         ) : (
           weatherTimeline?.location &&
           searchError === undefined && (
             <>
-              <SearchLocationInput city={city} setCity={setCity} />
-
+              <SearchArea
+                city={city}
+                setCity={setCity}
+                waterRequirements={waterRequirements}
+                setWaterRequirements={setWaterRequirements}
+              />
               <div className="space-y-6 text-center ">
                 <p className="text-dark text-end">
                   {weatherTimeline.location.name},{" "}
@@ -76,6 +87,7 @@ export default function Home() {
                   <WeeklyView
                     weatherTimeline={weatherTimeline}
                     daysRange={daysRange}
+                    waterRequirements={waterRequirements}
                   />
                 </div>
               </div>
