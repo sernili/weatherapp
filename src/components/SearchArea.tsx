@@ -104,7 +104,7 @@ export function SearchArea({
                   type="text"
                   placeholder="Enter your city name"
                   autoComplete="address-level2"
-                  className="border-dark border-2 hover:border-2 hover:cursor-pointer"
+                  className="border-dark border-2 hover:cursor-pointer"
                   {...field} // ✅ connects to RHF
                 />
               </FormControl>
@@ -129,7 +129,7 @@ export function SearchArea({
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between font-normal bg-white border-dark border-2",
+                        "w-[200px] justify-between font-normal bg-white border-dark border-2 hover:cursor-pointer",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -142,7 +142,7 @@ export function SearchArea({
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-[200px] p-0 hover:cursor-pointer">
                   <Command>
                     <CommandList>
                       <CommandEmpty>
@@ -194,7 +194,7 @@ export function SearchArea({
                       <Button
                         variant="outline"
                         id="date"
-                        className="w-48 justify-between font-normal border-dark border-2"
+                        className="w-48 justify-between font-normal border-dark border-2 hover:cursor-pointer"
                       >
                         {field.value
                           ? mounted
@@ -206,10 +206,11 @@ export function SearchArea({
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="w-fit overflow-hidden p-0 bg-white"
+                    className="w-fit overflow-hidden p-0 bg-white "
                     align="start"
                   >
                     <Calendar
+                      className="hover:cursor-pointer"
                       mode="single"
                       selected={field.value}
                       captionLayout="dropdown"

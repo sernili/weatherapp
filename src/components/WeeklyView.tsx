@@ -116,7 +116,7 @@ export default function WeeklyView({
 
   return (
     <div className="grid ">
-      <div className="grid grid-cols-7 gap-x-3  gap-y-12 place-items-center h-full ">
+      <div className="grid grid-cols-7 gap-x-3 gap-y-12 place-items-center h-full ">
         {weatherArray.map((data, index) => (
           <WeeklyViewItem
             key={data.date}

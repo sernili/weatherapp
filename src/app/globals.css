@@ -10,6 +10,9 @@
   --color-secondary: #c6d870;
   --color-tertiary: #eff5d2;
   --color-accent: #f3c623;
+  --color-warning: #ff8383;
+  --color-water: #a1d6cb;
+  --color-weather: #7eacb5;
 }
 
 @layer components {
